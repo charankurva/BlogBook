@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -10,8 +12,18 @@ import (
 )
 
 func (app *Application) CreateBlog(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	var blog data.Blog
+
+	dec := json.NewDecoder(r.Body)
+	dec.DisallowUnknownFields()
+	err := dec.Decode(&blog)
+	if err != nil {
+		app.logger.Error(err.Error())
+		http.Error(w, "unable to decode the input", http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("creating blog ......."))
+	w.Write([]byte(fmt.Sprintf("creating blog .......%v", blog.Title)))
 }
 func (app *Application) GetBlogById(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	id := ps.ByName("Id")
