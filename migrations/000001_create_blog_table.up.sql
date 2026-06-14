@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS blog (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    author INTEGER NOT NULL,
+    upvotes   INTEGER   NOT NULL,
+    downvotes  INTEGER   NOT NULL,
+    categoryID INTEGER   NOT NULL
+);
